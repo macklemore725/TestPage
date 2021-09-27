@@ -1,0 +1,307 @@
+  data -> Json is bascailly variables or things that can be used in the html 
+  databinding -> Can be used like html JAVASCript can almost do anything 
+  Variables Must be the same with json  
+
+  - e.POS 
+  - {{m.POS}}
+
+
+Testfile.json -> BasketballRefrence Data 
+Testfile2.json -> hastagbaskekball Projection 
+
+
+https://codepen.io/dbushell/pen/wGaamR 
+Responseive CSSs
+
+
+
+
+
+
+<div id="app">
+<!-- Point Guard -->
+
+    <div>
+        <select  id="select-state" placeholder="Pick a Point Guard" v-on:change="filterMember(event,'PG')" v-model="pselected">
+          <!-- v-model="selected"> -->
+          <option v-for="p in basketballpgddl" v-bind:value="p">
+            {{p.PLAYER}}
+          </option>
+        </select >
+        <div>
+          
+          <table class="container" v-if="pselected">
+         
+            <tr>
+              <th>Player Name</th>
+              <th>Position</th>
+              <th>Points</th>
+              <th>Rebound</th>
+              <th>FT%</th> 
+            </tr>
+            <tr v-for="p in basketballpg" >
+              <td>{{p.PLAYER}}</td>
+              <!-- Rounded -->
+              <!-- <td>{{Math.round((  p["FT%"].substring(0, p["FT%"].indexOf("("))*100) * 10, 2) / 10}}</td> -->
+              <!-- Not ROunded -->
+              <!-- <td>{{p["FT%"].substring(0, p["FT%"].indexOf("("))*100}}</td> -->
+              <td>{{p.POS}}</td>
+              <td>{{p.PTS}}</td>
+              <td>{{p.TREB}}</td>
+              <td>{{MathRoundUp(p["FT%"])}}%</td>
+              <td>{{AddingTotals(p["FT%"])}}</td>
+              <!-- Comment:Json the values are strings turn to int -->
+              <!-- <td>{{parseInt(m.TRB)+1}}</td> ˚ -->
+            </tr>
+          </table>
+          <table class="container" v-else>
+              <tr>
+                <th>Player Name</th>
+                <th>Position</th>
+                <th>Points</th>
+                <th>Rebound</th>
+                <th>FT%</th> 
+                </tr>
+    
+            <td>
+              <B>No Players(PG) Selected</B>
+            </td>
+          </table>
+        </div>
+      </div>
+
+
+      <!-- ShootingGuard -->
+      <div>
+          <select placeholder="Pick a ShootingGuard " v-on:change="filterMember(event,'SG')" v-model="sgselected">
+            <!-- v-model="selected"> -->
+            <option v-for="sg in basketballsgddl" v-bind:value="sg">
+              {{sg.PLAYER}}
+            </option>
+          </select >
+          <div>
+            
+            <table class="container" v-if="sgselected">
+              <tr>
+                <td class="PositionTitle">
+                 Shooting Guard
+                </td>
+              </tr>
+              <tr>
+                <th>Player Name</th>
+                <th>Position</th>
+                <th>Points</th>
+                <th>Rebound</th>
+                <th>FT%</th>
+              </tr>
+  
+              
+              <tr v-for="sg in basketballsg" >
+                <td>{{sg.PLAYER}}</td>
+                <!-- <td>{{String(p['R#']).split(' ')[1]}}</td> -->
+                <td>{{sg.POS}}</td>
+                <td>{{sg.PTS}}</td>
+                <td>{{sg.TREB}}</td>
+                <td>{{MathRoundUp(sg["FT%"])}}%</td>
+                <!-- Comment:Json the values are strings turn to int -->
+                <!-- <td>{{parseInt(m.TRB)+1}}</td> ˚ -->
+              </tr>
+            </table>
+            <table class="container" v-else>
+                <tr>
+                    <th>Player Name</th>
+                    <th>Position</th>
+                    <th>Points</th>
+                    <th>Rebound</th>
+                    <th>FT%</th>
+                  </tr>
+      
+              <td>
+                <B>No Players(SG) Selected</B>
+              </td>
+            </table>
+          </div>
+        </div>
+
+  <!-- Small Forward -->
+  <!-- <select v-on:change="filterMember"> -->
+
+  <select v-on:change="filterMember(event,'SF')" v-model="sfselected">
+    <!-- v-model="selected"> -->
+    <option v-for="m in basketballsfddl" v-bind:value="m">
+      {{m.PLAYER}}
+    </option>
+  </select>
+  <div>
+    <table  class="container" v-if="sfselected">
+      <tr>
+        <th>
+          Small Forward
+        </th>
+      </tr>
+      <tr>
+        <th>Player Name</th>
+        <!-- <th>Rank</th> -->
+        <th>Position</th>
+        <th>Points</th>
+        <th>Rebound</th>
+        <th>FT%</th>
+      </tr>
+      <tr v-for="m in basketballsf" >
+        <td>{{m.PLAYER}}</td>
+        <!-- <td>{{m.Rk}}</td> -->
+        <td>{{m.POS}}</td>
+        <td>{{m.PTS}}</td>
+        <td>{{m.TREB}}</td>
+        <td>{{MathRoundUp(m["FT%"])}}%</td>
+        <!-- Comment:Json the values are strings turn to int -->
+        <!-- <td>{{parseInt(m.TRB)+1}}</td> ˚ -->
+      </tr>
+    </table>
+    <table class="container" v-else>
+        <tr>
+            <th>Player Name</th>
+            <th>Position</th>
+            <th>Points</th>
+            <th>Rebound</th>
+            
+          </tr>
+
+     <td>
+              <B>No Players(SF) Selected</B>
+            </td>
+    </table>
+  </div>
+
+  <!-- Power Foward -->
+  <select v-on:change="filterMember(event,'PF')" v-model="pfselected">
+      <!-- v-model="selected"> -->
+      <option v-for="pf in basketballpfddl" v-bind:value="pf">
+        {{pf.PLAYER}}
+      </option>
+    </select>
+    <div>
+      <table  class="container" v-if="pfselected">
+        <tr>
+          <th>
+           Power Foward
+          </th>
+        </tr>
+        <tr>
+          <th>Player Name</th>
+          <!-- <th>Rank</th> -->
+          <th>Position</th>
+          <th>Points</th>
+          <th>Rebound</th>
+          <th>FT%</th>
+        </tr>
+        <tr v-for="pf in basketballpf" >
+          <td>{{pf.PLAYER}}</td>
+          <!-- <td>{{m.Rk}}</td> -->
+          <td>{{pf.POS}}</td>
+          <td>{{pf.PTS}}</td>
+          <td>{{pf.TREB}}</td>
+          <td>{{MathRoundUp(pf["FT%"])}}%</td>
+          <!-- Comment:Json the values are strings turn to int -->
+          <!-- <td>{{parseInt(m.TRB)+1}}</td> ˚ -->
+        </tr>
+      </table>
+      <table class="container" v-else>
+          <tr>
+              <th>Player Name</th>
+              <th>Position</th>
+              <th>Points</th>
+              <th>Rebound</th>
+            </tr>
+
+       <td>
+                <B>No Players(PF) Selected</B>
+              </td>
+      </table>
+    </div>
+    <!-- Center -->
+    <select v-on:change="filterMember(event,'C')" v-model="cselected">
+        <!-- v-model="selected"> -->
+        <option v-for="c in basketballcddl" v-bind:value="c">
+          {{c.PLAYER}}
+        </option>
+      </select>
+      <div>
+        <table  class="container" v-if="cselected">
+          <tr>
+            <th>
+             Center
+            </th>
+          </tr>
+          <tr>
+            <th>Player Name</th>
+            <!-- <th>Rank</th> -->
+            <th>Position</th>
+            <th>Points</th>
+            <th>Rebound</th>
+            <th>FT%</th>
+          </tr>
+          <tr v-for="c in basketballc" >
+            <td>{{c.PLAYER}}</td>
+            <!-- <td>{{m.Rk}}</td> -->
+            <td>{{c.POS}}</td>
+            <td>{{c.PTS}}</td>
+            <td>{{c.TREB}}</td>
+            <td>{{MathRoundUp(c["FT%"])}}%</td>
+
+            <!-- Comment:Json the values are strings turn to int -->
+            <!-- <td>{{parseInt(m.TRB)+1}}</td> ˚ -->
+          </tr>
+        </table>
+        <table class="container" v-else>
+            <tr>
+                <th>Player Name</th>
+                <th>Position</th>
+                <th>Points</th>
+                <th>Rebound</th>
+              </tr>
+  
+         <td>
+                  <B>No Players(c) Selected</B>
+                </td>
+        </table>
+      </div>
+<!-- Total  -->
+  <div>
+      <div>
+        <table class="container">
+          <tr>
+            <th>
+          Total 
+            </th>
+          </tr>
+          <tr>
+            <!-- <th>Rank</th> -->
+            <th>Total Points</th>
+            <th>Total Rebound</th>
+          </tr>
+          <tr>
+            <!-- <td>{{m.Rk}}</td> -->
+            <td>{{parseInt(pselected.PTS)+parseInt(sfselected.PTS)+parseInt(sgselected.PTS)+parseInt(pfselected.PTS)+parseInt(cselected.PTS)}}</td>
+            <td>{{parseInt(pselected.TREB)+parseInt(sfselected.TREB)+parseInt(sgselected.TREB)+parseInt(pfselected.TREB)+parseInt(cselected.TREB)}}</td> 
+            <!-- Comment:Json the values are strings turn to int -->
+            <!-- <td>{{parseInt(m.TRB)+1}}</td> ˚ -->
+          </tr>
+        </table>
+        <!-- <table v-else>
+          <td>
+            <p>No Players Selected</p>
+          </td> -->
+        </table>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    
